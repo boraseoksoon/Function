@@ -4,7 +4,7 @@ import Foundation
 // (rest ["a" "b" "c" "d" "e"])  ;;=> ("b" "c" "d" "e")
 
 // ordering issue: set, dictionary
-func rest<T>(_ col: T) -> Array<T.Element> where T : Sequence,
+public func rest<T>(_ col: T) -> Array<T.Element> where T : Sequence,
                                                  T.Iterator.Element : Any {
     col.dropFirst(1).map { $0 }
 }
