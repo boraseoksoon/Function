@@ -21,13 +21,13 @@ public func rest<T>(_ col: T) -> Array<T.Element> where T : Sequence,
 //    return range
 //}
 
-func peek<T>(_ col: T) -> T.Element? where T : Sequence,
+public func peek<T>(_ col: T) -> T.Element? where T : Sequence,
                                            T.Iterator.Element : Any {
     col.prefix(1).map { $0 }.first
 }
 
 // (pop [1 2 3])
-func pop<T>(_ col: T) -> [T.Element] where T : Sequence,
+public func pop<T>(_ col: T) -> [T.Element] where T : Sequence,
                                            T.Iterator.Element : Any {
     col.dropLast()
 }
@@ -36,7 +36,7 @@ func pop<T>(_ col: T) -> [T.Element] where T : Sequence,
 //pop([1,2,3])
 
 
-func time(_ fn: (@escaping () -> ())) {
+public func time(_ fn: (@escaping () -> ())) {
     let startTime = CFAbsoluteTimeGetCurrent()
 
     fn()
@@ -49,11 +49,11 @@ func time(_ fn: (@escaping () -> ())) {
 //    drop(2, [1,2,3,4])
 //}
 
-func hashSet<T>(_ arr: [T]) -> Set<T> {
+public func hashSet<T>(_ arr: [T]) -> Set<T> {
     Set<T>(arr)
 }
 
-func rand(_ digit: Double = 1.0) -> Double {
+public func rand(_ digit: Double = 1.0) -> Double {
     Double.random(in: 0..<digit)
 }
 
@@ -75,7 +75,7 @@ func rand(_ digit: Double = 1.0) -> Double {
 
 // (hash-set 1 2 3)
 
-func drop<T>(_ upto: Int, _ collection: T) -> [T.Element]
+public func drop<T>(_ upto: Int, _ collection: T) -> [T.Element]
     where T : Sequence,
           T.Iterator.Element : Any,
           T.Iterator.Element : Comparable {
@@ -155,7 +155,7 @@ func drop<T>(_ upto: Int, _ collection: T) -> [T.Element]
 /// `cycle`
 /// "Returns a lazy (infinite!) sequence of repetitions of the items in coll."
 /// - Parameter range: range to cycle repeatedly
-func get(_ collection: Any, _ key: Any) -> Any? {
+public func get(_ collection: Any, _ key: Any) -> Any? {
     switch collection {
         case is [String:Any]:
             guard let key = key as? String else { return nil }
@@ -183,7 +183,7 @@ func get(_ collection: Any, _ key: Any) -> Any? {
 /// `cycle`
 /// "Returns a lazy (infinite!) sequence of repetitions of the items in coll."
 /// - Parameter range: range to cycle repeatedly
-func cycle(_ range: LazySequence<Array<Int>>) ->
+public func cycle(_ range: LazySequence<Array<Int>>) ->
     CycleSequence<Range<LazySequence<Array<Int>>.Element>> {
 //    AnySequence<IndexingIterator<Array<Int>>.Element> {
     return CycleSequence(cycling: range.first!..<range.last!)
@@ -200,7 +200,7 @@ func cycle(_ range: LazySequence<Array<Int>>) ->
 /// no collection is provided."
 /// - Parameter n: number to take out of range
 /// - Parameter range: given range of array
-func take<S: Sequence>(_ n: Int, _ range: S) -> [S.Element] {
+public func take<S: Sequence>(_ n: Int, _ range: S) -> [S.Element] {
     zip(1...n, range).map { $1 }
 }
 
@@ -211,7 +211,7 @@ func take<S: Sequence>(_ n: Int, _ range: S) -> [S.Element] {
 /// no collection is provided."
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
-func map<A,B>(_ arr: [A], _ fn: ((A) -> B)) -> [B] where A: Equatable, B: Equatable {
+public func map<A,B>(_ arr: [A], _ fn: ((A) -> B)) -> [B] where A: Equatable, B: Equatable {
     var res = [B]()
 
     for i in arr {
@@ -228,7 +228,7 @@ func map<A,B>(_ arr: [A], _ fn: ((A) -> B)) -> [B] where A: Equatable, B: Equata
 /// no collection is provided."
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
-func filter<F>(_ arr: [F], _ fn: ((F) -> Bool)) -> [F] {
+public func filter<F>(_ arr: [F], _ fn: ((F) -> Bool)) -> [F] {
     var res = [F]()
 
     for i in arr {
@@ -247,7 +247,7 @@ func filter<F>(_ arr: [F], _ fn: ((F) -> Bool)) -> [F] {
 /// no collection is provided."
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
-func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
+public func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
     var res: F = 0
 
     for i in arr {
@@ -266,7 +266,7 @@ func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
 /// - Parameter range: given range of array
 
 typealias LazyRange = LazySequence<Array<Int>>
-func range(_ from: Int, _ to: Int) -> LazyRange {
+public func range(_ from: Int, _ to: Int) -> LazyRange {
     Array((from...to)).lazy
 }
 
