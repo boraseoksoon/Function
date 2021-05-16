@@ -265,7 +265,7 @@ public func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
 
-typealias LazyRange = LazySequence<Array<Int>>
+public typealias LazyRange = LazySequence<Array<Int>>
 public func range(_ from: Int, _ to: Int) -> LazyRange {
     Array((from...to)).lazy
 }
