@@ -1,10 +1,58 @@
 import Foundation
 
+// (* 0.5 200)
+
+// https://clojuredocs.org/clojure.core/*
+public func multiply(_ op1: Double, _ op2: Double) -> Double {
+    op1 * op2
+}
+
+// aclone
+// https://clojuredocs.org/clojure.core/aclone
+
+
+// and
+// https://clojuredocs.org/clojure.core/and
+// (and true true)
+
+public func and(_ op1: Bool, _ op2: Bool) -> Bool {
+    op1 && op2
+}
+
+//and(true, true)
+//and(true, false)
+
+/// 'or'
+// https://clojuredocs.org/clojure.core/or
+public func or(_ op1: Bool, _ op2: Bool) -> Bool {
+    op1 || op2
+}
+
+//or(true, true)
+//or(true, false)
+//or(false, false)
+
+public func isDouble(_ item: Any) -> Bool {
+    (item as? Double) != nil ? true : false
+}
+
+public func isFloat(_ item: Any) -> Bool {
+    (item as? Float) != nil ? true : false
+}
+
+public func isEven(_ item: Any) -> Bool {
+    ((item as? Int)?.isMultiple(of: 2) ?? false) ? true : false
+}
+
+public func isOdd(_ item: Any) -> Bool {
+    ((item as? Int)?.isMultiple(of: 2) ?? true) ? false : true
+}
+
 // (rest [1 2 3 4 5])            ;;=> (2 3 4 5)
 // (rest ["a" "b" "c" "d" "e"])  ;;=> ("b" "c" "d" "e")
 
 // ordering issue: set, dictionary
-public func rest<T>(_ col: T) -> Array<T.Element> where T : Sequence,
+func rest<T>(_ col: T) -> Array<T.Element> where T : Sequence,
                                                  T.Iterator.Element : Any {
     col.dropFirst(1).map { $0 }
 }
@@ -21,13 +69,13 @@ public func rest<T>(_ col: T) -> Array<T.Element> where T : Sequence,
 //    return range
 //}
 
-public func peek<T>(_ col: T) -> T.Element? where T : Sequence,
+func peek<T>(_ col: T) -> T.Element? where T : Sequence,
                                            T.Iterator.Element : Any {
     col.prefix(1).map { $0 }.first
 }
 
 // (pop [1 2 3])
-public func pop<T>(_ col: T) -> [T.Element] where T : Sequence,
+func pop<T>(_ col: T) -> [T.Element] where T : Sequence,
                                            T.Iterator.Element : Any {
     col.dropLast()
 }
@@ -36,7 +84,7 @@ public func pop<T>(_ col: T) -> [T.Element] where T : Sequence,
 //pop([1,2,3])
 
 
-public func time(_ fn: (@escaping () -> ())) {
+func time(_ fn: (@escaping () -> ())) {
     let startTime = CFAbsoluteTimeGetCurrent()
 
     fn()
@@ -49,11 +97,11 @@ public func time(_ fn: (@escaping () -> ())) {
 //    drop(2, [1,2,3,4])
 //}
 
-public func hashSet<T>(_ arr: [T]) -> Set<T> {
+func hashSet<T>(_ arr: [T]) -> Set<T> {
     Set<T>(arr)
 }
 
-public func rand(_ digit: Double = 1.0) -> Double {
+func rand(_ digit: Double = 1.0) -> Double {
     Double.random(in: 0..<digit)
 }
 
@@ -75,7 +123,7 @@ public func rand(_ digit: Double = 1.0) -> Double {
 
 // (hash-set 1 2 3)
 
-public func drop<T>(_ upto: Int, _ collection: T) -> [T.Element]
+func drop<T>(_ upto: Int, _ collection: T) -> [T.Element]
     where T : Sequence,
           T.Iterator.Element : Any,
           T.Iterator.Element : Comparable {
@@ -155,7 +203,7 @@ public func drop<T>(_ upto: Int, _ collection: T) -> [T.Element]
 /// `cycle`
 /// "Returns a lazy (infinite!) sequence of repetitions of the items in coll."
 /// - Parameter range: range to cycle repeatedly
-public func get(_ collection: Any, _ key: Any) -> Any? {
+func get(_ collection: Any, _ key: Any) -> Any? {
     switch collection {
         case is [String:Any]:
             guard let key = key as? String else { return nil }
@@ -183,14 +231,14 @@ public func get(_ collection: Any, _ key: Any) -> Any? {
 /// `cycle`
 /// "Returns a lazy (infinite!) sequence of repetitions of the items in coll."
 /// - Parameter range: range to cycle repeatedly
-public func cycle(_ range: LazySequence<Array<Int>>) ->
+func cycle(_ range: LazySequence<Array<Int>>) ->
     CycleSequence<Range<LazySequence<Array<Int>>.Element>> {
 //    AnySequence<IndexingIterator<Array<Int>>.Element> {
     return CycleSequence(cycling: range.first!..<range.last!)
 //    return cycleSequence(for: range)
 }
 
-//take(10, cycle(range(0, 2)))
+// take(10, cycle(range(0, 2)))
 // [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
 
 /// `take`
@@ -200,7 +248,7 @@ public func cycle(_ range: LazySequence<Array<Int>>) ->
 /// no collection is provided."
 /// - Parameter n: number to take out of range
 /// - Parameter range: given range of array
-public func take<S: Sequence>(_ n: Int, _ range: S) -> [S.Element] {
+func take<S: Sequence>(_ n: Int, _ range: S) -> [S.Element] {
     zip(1...n, range).map { $1 }
 }
 
@@ -211,7 +259,7 @@ public func take<S: Sequence>(_ n: Int, _ range: S) -> [S.Element] {
 /// no collection is provided."
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
-public func map<A,B>(_ arr: [A], _ fn: ((A) -> B)) -> [B] where A: Equatable, B: Equatable {
+func map<A,B>(_ arr: [A], _ fn: ((A) -> B)) -> [B] where A: Equatable, B: Equatable {
     var res = [B]()
 
     for i in arr {
@@ -228,7 +276,7 @@ public func map<A,B>(_ arr: [A], _ fn: ((A) -> B)) -> [B] where A: Equatable, B:
 /// no collection is provided."
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
-public func filter<F>(_ arr: [F], _ fn: ((F) -> Bool)) -> [F] {
+func filter<F>(_ arr: [F], _ fn: ((F) -> Bool)) -> [F] {
     var res = [F]()
 
     for i in arr {
@@ -247,7 +295,7 @@ public func filter<F>(_ arr: [F], _ fn: ((F) -> Bool)) -> [F] {
 /// no collection is provided."
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
-public func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
+func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
     var res: F = 0
 
     for i in arr {
@@ -265,8 +313,8 @@ public func reduce<F>(_ arr: [F], _ fn: ((F) -> F)) -> F where F: Numeric {
 /// - Parameter upto: number to take out of range
 /// - Parameter range: given range of array
 
-public typealias LazyRange = LazySequence<Array<Int>>
-public func range(_ from: Int, _ to: Int) -> LazyRange {
+typealias LazyRange = LazySequence<Array<Int>>
+func range(_ from: Int, _ to: Int) -> LazyRange {
     Array((from...to)).lazy
 }
 
@@ -390,4 +438,3 @@ public struct CycleIterator<C: Collection>: IteratorProtocol {
 //                         })
 //    )
 //}
-
